@@ -74,18 +74,21 @@ jobs:
         path: LICENSE-linux-x64.zip
         key: LICENSE-linux-x64.zip-${{ github.sha }}
         fail-on-cache-miss: true
+        enableCrossOsArchive: true
     - name: Restore macOS archive
       uses: actions/cache/restore@v3
       with:
         path: LICENSE-macos-x64.zip
         key: LICENSE-macos-x64.zip-${{ github.sha }}
         fail-on-cache-miss: true
+        enableCrossOsArchive: true
     - name: Restore Windows archive
       uses: actions/cache/restore@v3
       with:
         path: LICENSE-windows-x64.zip
         key: LICENSE-windows-x64.zip-${{ github.sha }}
         fail-on-cache-miss: true
+        enableCrossOsArchive: true
     - name: Check archives
       shell: bash
       run: |

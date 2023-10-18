@@ -81,3 +81,4 @@ runs:
     with:
       path: ${{ steps.setup-shelve.outputs.archive }}
       key: ${{ steps.setup-shelve.outputs.cache-key }}
+      enableCrossOsArchive: true
