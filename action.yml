@@ -1,5 +1,5 @@
 name: 'Shelve Build Output'
-description: 'GitHub action for shelving a build output, usually a binary executable, on each platform to cache, so that it can be unshelved later in the final job, which will produce a release for all platforms.'
+description: 'GitHub action for shelving a build output on each platform to cache, so that it can be unshelved later to create a release.'
 author: prantlf
 
 branding:
