@@ -1,7 +1,5 @@
 # Shelve Build Output
 
-[![Latest version](https://img.shields.io/npm/v/shelve-output-action) ![Dependency status](https://img.shields.io/librariesio/release/npm/shelve-output)](https://www.npmjs.com/package/shelve-output)
-
 GitHub action for shelving a build output, usually a binary executable, on each platform to cache, so that it can be unshelved later in the final job, which will produce a release for all platforms.
 
 Only platforms Linux, macOS, Windows on the architecture X64 are supported.
