@@ -19,7 +19,15 @@ jobs:
     - name: Checkout sources
       uses: actions/checkout@v4
     - name: Test defaults
+      id: test-linux
       uses: ./
+    - name: Check archive
+      shell: bash
+      run: |
+        if [ ! -f "${{ steps.test-linux.outputs.archive }}" ]; then
+          echo "${{ steps.test-linux.outputs.archive }} does not exist"
+          exit 1
+        fi
 
   macos:
     runs-on: macos-latest
@@ -27,7 +35,15 @@ jobs:
     - name: Checkout sources
       uses: actions/checkout@v4
     - name: Test defaults
+      id: test-macos
       uses: ./
+    - name: Check archive
+      shell: bash
+      run: |
+        if [ ! -f "${{ steps.test-macos.outputs.archive }}" ]; then
+          echo "${{ steps.test-macos.outputs.archive }} does not exist"
+          exit 1
+        fi
 
   windows:
     runs-on: windows-latest
@@ -35,4 +51,53 @@ jobs:
     - name: Checkout sources
       uses: actions/checkout@v4
     - name: Test defaults
+      id: test-windows
       uses: ./
+    - name: Check archive
+      shell: powershell
+      run: |
+        if (!(Test-Path "${{ steps.test-windows.outputs.archive }}")) {
+          Write-Warning ""${{ steps.test-windows.outputs.archive }}" does not exist"
+          exit 1
+        }
+
+  test:
+    needs:
+      - linux
+      - macos
+      - windows
+    runs-on: ubuntu-latest
+    steps:
+    - name: Restore Linux archive
+      uses: actions/cache/restore@v3
+      with:
+        path: LICENSE-linux-x64.zip
+        key: LICENSE-linux-x64.zip-${{ github.sha }}
+        fail-on-cache-miss: true
+    - name: Restore macOS archive
+      uses: actions/cache/restore@v3
+      with:
+        path: LICENSE-macos-x64.zip
+        key: LICENSE-macos-x64.zip-${{ github.sha }}
+        fail-on-cache-miss: true
+    - name: Restore Windows archive
+      uses: actions/cache/restore@v3
+      with:
+        path: LICENSE-windows-x64.zip
+        key: LICENSE-windows-x64.zip-${{ github.sha }}
+        fail-on-cache-miss: true
+    - name: Check archives
+      shell: bash
+      run: |
+        if [ ! -f "LICENSE-linux-x64.zip" ]; then
+          echo "LICENSE-linux-x64.zip does not exist"
+          exit 1
+        fi
+        if [ ! -f "LICENSE-macos-x64.zip" ]; then
+          echo "LICENSE-macos-x64.zip does not exist"
+          exit 1
+        fi
+        if [ ! -f "LICENSE-windows-x64.zip" ]; then
+          echo "LICENSE-windows-x64.zip does not exist"
+          exit 1
+        fi
