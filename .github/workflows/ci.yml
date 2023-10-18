@@ -1,0 +1,38 @@
+name: Test or Release
+
+on:
+  push:
+    branches:
+      - master
+    tags-ignore:
+      - '**'
+    paths-ignore:
+      - '**/*.md'
+      - LICENSE
+  pull_request:
+
+jobs:
+
+  linux:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout sources
+      uses: actions/checkout@v4
+    - name: Test defaults
+      uses: ./
+
+  macos:
+    runs-on: macos-latest
+    steps:
+    - name: Checkout sources
+      uses: actions/checkout@v4
+    - name: Test defaults
+      uses: ./
+
+  windows:
+    runs-on: windows-latest
+    steps:
+    - name: Checkout sources
+      uses: actions/checkout@v4
+    - name: Test defaults
+      uses: ./
