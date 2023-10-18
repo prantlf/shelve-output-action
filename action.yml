@@ -34,11 +34,11 @@ runs:
   - name: Check platform and architecture
     if: ${{ runner.os != 'Linux' && runner.os != 'macOS' && runner.os != 'Windows' || runner.arch != 'X64' }}
     env:
-      SO_OS: ${{ runner.os }}
+      SO_PLAT: ${{ runner.os }}
       SO_ARCH: ${{ inputs.sha256sum }}
     shell: bash
     run: |
-      echo "::error title=⛔ Unsupported platform or architecture: $SO_OS-$SO_ARCH error hint::Supported are Linux, macOS, Windows on X64"
+      echo "::error title=⛔ Unsupported platform or architecture: $SO_PLAT-$SO_ARCH error hint::Supported are Linux, macOS, Windows on X64"
       exit 1
   - name: Setup parameters
     id: setup-shelve
@@ -74,10 +74,8 @@ runs:
     run: zip -9 ${{ steps.setup-shelve.outputs.archive }} ${{ steps.setup-shelve.outputs.path }}
   - name: Pack on Windows
     if: ${{ runner.os == 'Windows' }}
-    uses: vimtor/action-zip@v1.1
-    with:
-      files: ${{ steps.setup-shelve.outputs.path }}
-      dest: ${{ steps.setup-shelve.outputs.archive }}
+    shell: powershell
+    run: Compress-Archive -Path "${{ steps.setup-shelve.outputs.path }}" -DestinationPath "${{ steps.setup-shelve.outputs.archive }}"
   - name: Put archive to cache
     uses: actions/cache/save@v3
     with:
