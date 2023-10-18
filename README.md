@@ -1,6 +1,6 @@
 # Shelve Build Output
 
-GitHub action for shelving a build output, usually a binary executable, on each platform to cache, so that it can be unshelved later in the final job, which will produce a release for all platforms.
+GitHub action for shelving a build output, usually a binary executable, on each platform to cache, so that it can be unshelved later in the final job by [unshelve-output-action], to be able to produce a release for all platforms.
 
 Only platforms Linux, macOS, Windows on the architecture X64 are supported.
 
@@ -74,3 +74,4 @@ Copyright (C) 2023 Ferdinand Prantl
 Licensed under the [MIT License].
 
 [MIT License]: http://en.wikipedia.org/wiki/MIT_License
+[unshelve-output-action]: https://github.com/prantlf/unshelve-output-action
