@@ -1,5 +1,11 @@
 # Changes
 
+# [1.0.3](https://github.com/prantlf/shelve-output-action/compare/v1.0.2...v1.0.3) (2023-10-19)
+
+## Bug Fixes
+
+* Append .exe to the binary name on Windows ([49af19b](https://github.com/prantlf/shelve-output-action/commit/49af19b914f99d04dd79a4f1f0ed3a7492521a3e))
+
 # [1.0.2](https://github.com/prantlf/shelve-output-action/compare/v1.0.1...v1.0.2) (2023-10-18)
 
 ## Bug Fixes
