@@ -51,13 +51,13 @@ runs:
     shell: bash
     run: |
       if [[ "$SO_ARCHIVE" == "" ]]; then
-        SO_NAME=$(node -e "console.log(/^.*name: *['"]([^'"]+)['"].*$/mg.exec(require('fs').readFileSync('v.mod', 'utf8'))[1])")
+        SO_NAME=$(node -e "console.log(/^.*name: *['\"]([^'\"]+)['\"].*$/mg.exec(require('fs').readFileSync('v.mod', 'utf8'))[1])")
         SO_ARCHIVE=$SO_NAME-${SO_PLAT,,}-${SO_ARCH,,}.zip
       fi
       echo "archive=$SO_ARCHIVE" >> $GITHUB_OUTPUT
       if [[ "$SO_PATH" == "" ]]; then
         if [[ "$SO_NAME" == "" ]]; then
-          SO_NAME=$(node -e "console.log(/^.*name: *['"]([^'"]+)['"].*$/mg.exec(require('fs').readFileSync('v.mod', 'utf8'))[1])")
+          SO_NAME=$(node -e "console.log(/^.*name: *['\"]([^'\"]+)['\"].*$/mg.exec(require('fs').readFileSync('v.mod', 'utf8'))[1])")
         fi
         SO_PATH=$SO_NAME
         if [[ "$SO_PLAT" == "Windows" ]]; then
