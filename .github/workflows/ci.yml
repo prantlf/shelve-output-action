@@ -104,3 +104,15 @@ jobs:
           echo "LICENSE-windows-x64.zip does not exist"
           exit 1
         fi
+    - name: Clear Linux cache
+      uses: prantlf/delete-cache-action@v1
+      with:
+        key: LICENSE-linux-x64.zip-${{ github.sha }}
+    - name: Clear macOS cache
+      uses: prantlf/delete-cache-action@v1
+      with:
+        key: LICENSE-macos-x64.zip-${{ github.sha }}
+    - name: Clear Windows cache
+      uses: prantlf/delete-cache-action@v1
+      with:
+        key: LICENSE-windows-x64.zip-${{ github.sha }}
