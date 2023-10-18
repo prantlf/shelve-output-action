@@ -50,6 +50,9 @@ jobs:
     steps:
     - name: Checkout sources
       uses: actions/checkout@v4
+    - name: Simulate executable
+      shell: powershell
+      run: Copy-Item "LICENSE" -Destination "LICENSE.exe"
     - name: Test defaults
       id: test-windows
       uses: ./
