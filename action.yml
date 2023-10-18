@@ -52,7 +52,9 @@ runs:
     run: |
       if [[ "$SO_ARCHIVE" == "" ]]; then
         SO_NAME=$(node -e "console.log(/^.*name: *['\"]([^'\"]+)['\"].*$/mg.exec(require('fs').readFileSync('v.mod', 'utf8'))[1])")
-        SO_ARCHIVE=$SO_NAME-${SO_PLAT,,}-${SO_ARCH,,}.zip
+        SO_PLAT=$(echo "$SO_PLAT" | tr '[:upper:]' '[:lower:]')
+        SO_ARCH=$(echo "$SO_ARCH" | tr '[:upper:]' '[:lower:]')
+        SO_ARCHIVE=$SO_NAME-$SO_PLAT-$SO_ARCH.zip
       fi
       echo "archive=$SO_ARCHIVE" >> $GITHUB_OUTPUT
       if [[ "$SO_PATH" == "" ]]; then
