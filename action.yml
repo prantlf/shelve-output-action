@@ -79,7 +79,6 @@ runs:
       files: ${{ steps.setup.outputs.path }}
       dest: ${{ steps.setup.outputs.archive }}
   - name: Put archive to cache
-    if: ${{ runner.os == 'Linux' }}
     uses: actions/cache/save@v3
     with:
       path: ${{ steps.setup.outputs.archive }}
