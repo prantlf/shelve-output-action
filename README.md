@@ -12,6 +12,16 @@ Pack the binary executable produced with the project name to the project root:
 - uses: prantlf/shelve-output-action@v1
 ```
 
+Depending on the platform, where the action is running, and the `name` of the executable, it will create one of the following archives. For example, for the name `newchanges`:
+
+|    OS   |    Executable    |            Archive           |
+|:--------|:-----------------|:-----------------------------|
+| Linux   | `newchanges`     | `newchanges-linux-x64.zip`   |
+| macOS   | `newchanges`     | `newchanges-macos-x64.zip`   |
+| Windows | `newchanges.exe` | `newchanges-windows-x64.zip` |
+
+The name and path to the executable can be specified by `path`. The name [refix of the archive can be specified by `name`, the full fil3e name by `archive.`. If not specified, it will be inferred from the project configuration (`v.mod`).
+
 Use a different name, platform and architecture that defaults in the package archive name. Specify a custom path to the binary:
 
 ```yml
@@ -50,7 +60,14 @@ The name of the archive to be created. The project name from `v.mod` will be use
 Type: `String`<br>
 Default: (read from `v.mod`)
 
-The path to the binary file to package. The project name from `v.mod` will be used by default, with the file extenson according to the platform. (`.exe` will be appended on Windows by default.)
+The path to the binary file to package, on Windows including the `.exe` extension. The project name from `v.mod` will be used by default, with the file extension according to the platform (`.exe` will be appended on Windows).
+
+### enable
+
+Type: `Boolean`<br>
+Default: `true`
+
+Can be set to `false` to prevent this action from packing the archive. It's helpful in the pipeline, which will not continue releasing, but only building and testing, and that will be decided in the middle of a job execution.
 
 ## Outputs
 
