@@ -22,7 +22,7 @@ Depending on the platform, where the action is running, and the `name` of the ex
 
 The name and path to the executable can be specified by `path`. The name prefix of the archive can be specified by `name`, the full file name by `archive`. If not specified, it will be inferred from the project configuration (`v.mod`). The `{sha}` in the cache key is the SHA-1 hash of the current commit.
 
-Use a different name, platform and architecture that defaults in the package archive name. Specify a custom path to the binary:
+Use a different name, platform and architecture in the package archive name than the defaults. Specify a custom path to the binary:
 
 ```yml
 jobs:
