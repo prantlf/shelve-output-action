@@ -3,7 +3,7 @@ description: 'GitHub action for shelving a build output on each platform to cach
 author: prantlf
 
 branding:
-  icon: package
+  icon: upload
   color: blue
 
 inputs:
@@ -71,7 +71,7 @@ runs:
   - name: Pack on Linux and macOS
     if: ${{ runner.os == 'Linux' || runner.os == 'macOS' }}
     shell: bash
-    run: zip -9 ${{ steps.setup-shelve.outputs.archive }} ${{ steps.setup-shelve.outputs.path }}
+    run: zip -9j ${{ steps.setup-shelve.outputs.archive }} ${{ steps.setup-shelve.outputs.path }}
   - name: Pack on Windows
     if: ${{ runner.os == 'Windows' }}
     shell: powershell
