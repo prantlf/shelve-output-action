@@ -23,7 +23,7 @@ jobs:
     - run: ...
     - uses prantlf/shelve-output-action@v1
       with:
-        name: vpm-ubuntu-amd64.zip
+        archive: vpm-ubuntu-amd64.zip
         path: bin/vpm
 ```
 
@@ -31,12 +31,19 @@ jobs:
 
 The following parameters can be specified using the `with` object:
 
+### name
+
+Type: `String`<br>
+Default: (read from `v.mod`)
+
+The name of the archive without the platform and architecture and without the `.zip` extension. The project name from `v.mod` will be used by default. The name of the archive will be `{name}-{os}-{arch}.zip`, for example: `newchanges-linux-x64.zip`.
+
 ### archive
 
 Type: `String`<br>
 Default: (read from `v.mod`)
 
-The name of the archive to be created. The project name from `v.mod` will be used by default. The name of the archive will be `{name}-{os}-{arch}.zip`, for example: `newchanges-linux-x64.zip`.
+The name of the archive to be created. The project name from `v.mod` will be used by default, if `name` isn't provided. The name of the archive will be `{name}-{os}-{arch}.zip`, for example: `newchanges-linux-x64.zip`.
 
 ### path
 

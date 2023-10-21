@@ -7,9 +7,12 @@ branding:
   color: blue
 
 inputs:
+  name:
+    description: >-
+      The name of the archive without the platform and architecture and without the `.zip` extension. The project name from `v.mod` will be used by default. The name of the archive will be `{name}-{os}-{arch}.zip`, for example: `newchanges-linux-x64.zip`.
   archive:
     description: >-
-      The name of the archive to be created. The project name from `v.mod` will be used by default. The name of the archive will be `{name}-{os}-{arch}.zip`, for example: `newchanges-linux-x64.zip`.
+      The full name of the archive to be created, including the platform and architecture and the `.zip` extension. The project name from `v.mod` will be used by default, if `name` isn't provided. The name of the archive will be `{name}-{os}-{arch}.zip`, for example: `newchanges-linux-x64.zip`.
   path:
     description: >-
       The path to the binary file to package. The project name from `v.mod` will be used by default, with the file extenson according to the platform. (`.exe` will be appended on Windows by default.)
@@ -45,6 +48,7 @@ runs:
     env:
       SO_PLAT: ${{ runner.os }}
       SO_ARCH: ${{ runner.arch }}
+      SO_NAME: ${{ inputs.name }}
       SO_ARCHIVE: ${{ inputs.archive }}
       SO_PATH: ${{ inputs.path }}
       SO_HASH: ${{ github.sha }}
@@ -53,7 +57,9 @@ runs:
       SO_PLAT=$(echo "$SO_PLAT" | tr '[:upper:]' '[:lower:]')
       SO_ARCH=$(echo "$SO_ARCH" | tr '[:upper:]' '[:lower:]')
       if [[ "$SO_ARCHIVE" == "" ]]; then
-        SO_NAME=$(node -e "console.log(/^.*name: *['\"]([^'\"]+)['\"].*$/mg.exec(require('fs').readFileSync('v.mod', 'utf8'))[1])")
+        if [[ "$SO_NAME" == "" ]]; then
+          SO_NAME=$(node -e "console.log(/^.*name: *['\"]([^'\"]+)['\"].*$/mg.exec(require('fs').readFileSync('v.mod', 'utf8'))[1])")
+        fi
         SO_ARCHIVE=$SO_NAME-$SO_PLAT-$SO_ARCH.zip
       fi
       echo "archive=$SO_ARCHIVE" >> $GITHUB_OUTPUT
