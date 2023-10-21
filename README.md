@@ -12,15 +12,15 @@ Pack the binary executable produced with the project name to the project root:
 - uses: prantlf/shelve-output-action@v1
 ```
 
-Depending on the platform, where the action is running, and the `name` of the executable, it will create one of the following archives. For example, for the name `newchanges`:
+Depending on the platform, where the action is running, and the `name` of the executable, it will create one of the following archives and upload it to the cache. For example, for the name `newchanges`:
 
-|    OS   |    Executable    |            Archive           |
-|:--------|:-----------------|:-----------------------------|
-| Linux   | `newchanges`     | `newchanges-linux-x64.zip`   |
-| macOS   | `newchanges`     | `newchanges-macos-x64.zip`   |
-| Windows | `newchanges.exe` | `newchanges-windows-x64.zip` |
+|    OS   |    Executable    |            Archive           |            Cache Key               |
+|:--------|:-----------------|:-----------------------------|:-----------------------------------|
+| Linux   | `newchanges`     | `newchanges-linux-x64.zip`   | `newchanges-linux-x64.zip-{sha}`   |
+| macOS   | `newchanges`     | `newchanges-macos-x64.zip`   | `newchanges-macos-x64.zip-{sha}`   |
+| Windows | `newchanges.exe` | `newchanges-windows-x64.zip` | `newchanges-windows-x64.zip-{sha}` |
 
-The name and path to the executable can be specified by `path`. The name [refix of the archive can be specified by `name`, the full fil3e name by `archive.`. If not specified, it will be inferred from the project configuration (`v.mod`).
+The name and path to the executable can be specified by `path`. The name [refix of the archive can be specified by `name`, the full file name by `archive`. If not specified, it will be inferred from the project configuration (`v.mod`). The `{sha}` in the cache key is the SHA-1 hash of the current commit.
 
 Use a different name, platform and architecture that defaults in the package archive name. Specify a custom path to the binary:
 
