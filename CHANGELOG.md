@@ -1,5 +1,16 @@
 # Changes
 
+# [1.1.0](https://github.com/prantlf/shelve-output-action/compare/v1.0.3...v1.1.0) (2023-10-21)
+
+## Features
+
+* Add input "name" to specify archive name with suffixes ([aee2579](https://github.com/prantlf/shelve-output-action/commit/aee2579d863ddd9d5b86554574dea3d6f446fd34))
+* Add input "enable" to optionally skip this action ([0163c0f](https://github.com/prantlf/shelve-output-action/commit/0163c0f968fe7cdd7065554fd1d38b8e888e4129))
+
+## Bug Fixes
+
+* Drop the path from the packed executable ([88749fb](https://github.com/prantlf/shelve-output-action/commit/88749fb28b3f8dc9a12a371d855614331b2b4b74))
+
 # [1.0.3](https://github.com/prantlf/shelve-output-action/compare/v1.0.2...v1.0.3) (2023-10-19)
 
 ## Bug Fixes
