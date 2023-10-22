@@ -9,7 +9,7 @@ Only platforms Linux, macOS, Windows on the architecture X64 are supported.
 Pack the binary executable produced with the project name to the project root:
 
 ```yml
-- uses: prantlf/shelve-output-action@v1
+- uses: prantlf/shelve-output-action@v2
 ```
 
 Depending on the platform, where the action is running, and the `name` of the executable, it will create one of the following archives and upload it to the cache. For example, for the name `newchanges`:
@@ -22,19 +22,20 @@ Depending on the platform, where the action is running, and the `name` of the ex
 
 The name and path to the executable can be specified by `path`. The name prefix of the archive can be specified by `name`, the full file name by `archive`. If not specified, it will be inferred from the project configuration (`v.mod`). The `{sha}` in the cache key is the SHA-1 hash of the current commit.
 
-Use a different name, platform and architecture in the package archive name than the defaults. Specify a custom path to the binary:
+Use a different name, platform and architecture in the package archive name than the defaults. Specify a custom path to the binary. Work only in specific release branches:
 
 ```yml
 jobs:
   build:
     steps:
     - uses: actions/checkout@v4
-    - uses: prantlf/setup-v-action@v1
+    - uses: prantlf/setup-v-action@v2
     - run: ...
-    - uses prantlf/shelve-output-action@v1
+    - uses prantlf/shelve-output-action@v2
       with:
         archive: vpm-ubuntu-amd64.zip
         path: bin/vpm
+        branches: master v1.x
 ```
 
 ## Inputs
@@ -61,6 +62,13 @@ Type: `String`<br>
 Default: (read from `v.mod`)
 
 The path to the binary file to package, on Windows including the `.exe` extension. The project name from `v.mod` will be used by default, with the file extension according to the platform (`.exe` will be appended on Windows).
+
+### branches
+
+Type: `String`<br>
+Default: `'main master'`
+
+Branches which this action should run for, which are used to publishing releases. Use whitespace for separating the branch names. If you want to use multiple lines in YAML, introduce them with ">-". If you want to allow all branches, set the value to "*".
 
 ### enable
 
@@ -89,7 +97,7 @@ The path to the file, which was packed.
 
 Type: `String`<br>
 
-The key, whcih was used to store the created archive to cache.
+The key, which was used to store the created archive to cache.
 
 ## License
 

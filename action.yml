@@ -16,6 +16,10 @@ inputs:
   path:
     description: >-
       The path to the binary file to package. The project name from `v.mod` will be used by default, with the file extenson according to the platform. (`.exe` will be appended on Windows by default.)
+  branches:
+    description: >-
+      Branches which this action should run for, which are used to publishing releases. Use spaces for separating the branch names. If you want to use multiple lines in YAML, introduce them with ">-". If you want to allow all branches, set the value to "*".
+    default: main master
   enable:
     description: >-
       Can be set to `false` to prevent this action from packing the archive. It's helpful in the pipeline, which will not continue releasing, but only building and testing, and that will be decided in the middle of a job execution.
@@ -25,31 +29,22 @@ outputs:
   archive:
     description: >-
       The name of the archive, which was created.
-    value: ${{ steps.setup-shelve.outputs.archive }}
+    value: ${{ steps.setup.outputs.archive }}
   path:
     description: >-
       The path to the file, which was packed.
-    value: ${{ steps.setup-shelve.outputs.path }}
+    value: ${{ steps.setup.outputs.path }}
   cache-key:
     description: >-
-      The key, whcih was used to store the created archive to cache.
-    value: ${{ steps.setup-shelve.outputs.cache-key }}
+      The key, which was used to store the created archive to cache.
+    value: ${{ steps.setup.outputs.cache-key }}
 
 runs:
   using: 'composite'
   steps:
-  - name: Check platform and architecture
-    if: ${{ inputs.enable && (runner.os != 'Linux' && runner.os != 'macOS' && runner.os != 'Windows' || runner.arch != 'X64') }}
-    env:
-      SO_PLAT: ${{ runner.os }}
-      SO_ARCH: ${{ inputs.sha256sum }}
-    shell: bash
-    run: |
-      echo "::error title=⛔ Unsupported platform or architecture: $SO_PLAT-$SO_ARCH error hint::Supported are Linux, macOS, Windows on X64"
-      exit 1
   - name: Setup parameters
-    if: ${{ inputs.enable }}
-    id: setup-shelve
+    if: ${{ inputs.enable == 'true' }}
+    id: setup
     env:
       SO_PLAT: ${{ runner.os }}
       SO_ARCH: ${{ runner.arch }}
@@ -57,6 +52,7 @@ runs:
       SO_ARCHIVE: ${{ inputs.archive }}
       SO_PATH: ${{ inputs.path }}
       SO_HASH: ${{ github.sha }}
+      SO_BRANCHES: ${{ inputs.branches }}
     shell: bash
     run: |
       SO_PLAT=$(echo "$SO_PLAT" | tr '[:upper:]' '[:lower:]')
@@ -79,18 +75,30 @@ runs:
       fi
       echo "path=$SO_PATH" >> $GITHUB_OUTPUT
       echo "cache-key=$SO_ARCHIVE-$SO_HASH" >> $GITHUB_OUTPUT
-  - name: Pack on Linux and macOS
-    if: ${{ inputs.enable && (runner.os == 'Linux' || runner.os == 'macOS') }}
+      if [[ "$SO_BRANCHES" == "*" || " $SO_BRANCHES " == *" $GITHUB_REF_NAME "* ]]; then
+        echo "enable=true" >> $GITHUB_OUTPUT
+      fi
+  - name: Check platform and architecture
+    if: ${{ steps.setup.outputs.enable == 'true' && (runner.os != 'Linux' && runner.os != 'macOS' && runner.os != 'Windows' || runner.arch != 'X64') }}
+    env:
+      SO_PLAT: ${{ runner.os }}
+      SO_ARCH: ${{ runner.arch }}
     shell: bash
-    run: zip -9j ${{ steps.setup-shelve.outputs.archive }} ${{ steps.setup-shelve.outputs.path }}
+    run: |
+      echo "::error title=⛔ Unsupported platform or architecture: $SO_PLAT-$SO_ARCH error hint::Supported are Linux, macOS, Windows on X64"
+      exit 1
+  - name: Pack on Linux and macOS
+    if: ${{ steps.setup.outputs.enable == 'true' && (runner.os == 'Linux' || runner.os == 'macOS') }}
+    shell: bash
+    run: zip -9j ${{ steps.setup.outputs.archive }} ${{ steps.setup.outputs.path }}
   - name: Pack on Windows
-    if: ${{ inputs.enable && runner.os == 'Windows' }}
+    if: ${{ steps.setup.outputs.enable == 'true' && runner.os == 'Windows' }}
     shell: powershell
-    run: Compress-Archive -Path "${{ steps.setup-shelve.outputs.path }}" -DestinationPath "${{ steps.setup-shelve.outputs.archive }}"
+    run: Compress-Archive -Path "${{ steps.setup.outputs.path }}" -DestinationPath "${{ steps.setup.outputs.archive }}"
   - name: Put archive to cache
-    if: ${{ inputs.enable }}
+    if: ${{ steps.setup.outputs.enable == 'true' }}
     uses: actions/cache/save@v3
     with:
-      path: ${{ steps.setup-shelve.outputs.archive }}
-      key: ${{ steps.setup-shelve.outputs.cache-key }}
+      path: ${{ steps.setup.outputs.archive }}
+      key: ${{ steps.setup.outputs.cache-key }}
       enableCrossOsArchive: true
