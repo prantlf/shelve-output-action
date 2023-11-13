@@ -1,5 +1,11 @@
 # Changes
 
+# [2.1.0](https://github.com/prantlf/shelve-output-action/compare/v2.0.0...v2.1.0) (2023-11-13)
+
+## Features
+
+* Allow overriding runner.os and runner.arch by inputs ([dd0f43d](https://github.com/prantlf/shelve-output-action/commit/dd0f43daa86b7896493ebb28d7db30601b1b5520))
+
 # [2.0.0](https://github.com/prantlf/shelve-output-action/compare/v1.1.0...v2.0.0) (2023-10-22)
 
 ## Features
