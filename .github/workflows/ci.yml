@@ -64,7 +64,7 @@ jobs:
           exit 1
         }
 
-  test:
+  test-and-release:
     needs:
       - linux
       - macos
@@ -119,3 +119,13 @@ jobs:
       uses: prantlf/delete-cache-action@v1
       with:
         key: LICENSE-windows-x64.zip-${{ github.sha }}
+    - name: Checkout sources
+      uses: actions/checkout@v4
+    - name: Publish release
+      if: ${{ github.ref_name == 'master' }}
+      uses: prantlf/publish-release-action@v1
+      with:
+        no-bump: true
+        no-archives: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
