@@ -14,11 +14,12 @@ Pack the binary executable produced with the project name to the project root:
 
 Depending on the platform, where the action is running, and the `name` of the executable, it will create one of the following archives and upload it to the cache. For example, for the name `newchanges`:
 
-|    OS   |    Executable    |            Archive           |            Cache Key               |
-|:--------|:-----------------|:-----------------------------|:-----------------------------------|
-| Linux   | `newchanges`     | `newchanges-linux-x64.zip`   | `newchanges-linux-x64.zip-{sha}`   |
-| macOS   | `newchanges`     | `newchanges-macos-x64.zip`   | `newchanges-macos-x64.zip-{sha}`   |
-| Windows | `newchanges.exe` | `newchanges-windows-x64.zip` | `newchanges-windows-x64.zip-{sha}` |
+|    OS   | Architecture |            Archive           |            Cache Key               |
+|:--------|:-------------|:-----------------------------|:-----------------------------------|
+| Linux   |      X64     | `newchanges-linux-x64.zip`   | `newchanges-linux-x64.zip-{sha}`   |
+| macOS   |     ARM64    | `newchanges-macos-arm64.zip` | `newchanges-macos-arm64.zip-{sha}` |
+| macOS   |      X64     | `newchanges-macos-x64.zip`   | `newchanges-macos-x64.zip-{sha}`   |
+| Windows |      X64     | `newchanges-windows-x64.zip` | `newchanges-windows-x64.zip-{sha}` |
 
 The name and path to the executable can be specified by `path`. The name prefix of the archive can be specified by `name`, the full file name by `archive`. If not specified, it will be inferred from the project configuration (`v.mod`). The `{sha}` in the cache key is the SHA-1 hash of the current commit.
 
@@ -55,6 +56,20 @@ Type: `String`<br>
 Default: (read from `v.mod`)
 
 The name of the archive to be created. The project name from `v.mod` will be used by default, if `name` isn't provided. The name of the archive will be `{name}-{os}-{arch}.zip`, for example: `newchanges-linux-x64.zip`.
+
+### os
+
+Type: `String`<br>
+Default: (read from `runner.os`)
+
+Override the operating system of the runner. Use if you are cross-compiling. Possible values: `linux`, `macos`, and `windows`.
+
+### arch
+
+Type: `String`<br>
+Default: (read from `runner.arch`)
+
+Override the architecture of the runner. Use if you are cross-compiling. Possible values: `arm`, `arm64`, `x64`, and `x86`.
 
 ### path
 

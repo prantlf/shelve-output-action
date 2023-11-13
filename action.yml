@@ -13,6 +13,12 @@ inputs:
   archive:
     description: >-
       The full name of the archive to be created, including the platform and architecture and the `.zip` extension. The project name from `v.mod` will be used by default, if `name` isn't provided. The name of the archive will be `{name}-{os}-{arch}.zip`, for example: `newchanges-linux-x64.zip`.
+  os:
+    description: >-
+      Override the operating system of the runner. Use if you are cross-compiling. Possible values: `linux`, `macos`, and `windows`.
+  arch:
+    description: >-
+      Override the architecture of the runner. Use if you are cross-compiling. Possible values: `arm`, `arm64`, `x64`, and `x86`.
   path:
     description: >-
       The path to the binary file to package. The project name from `v.mod` will be used by default, with the file extenson according to the platform. (`.exe` will be appended on Windows by default.)
@@ -48,6 +54,8 @@ runs:
     env:
       SO_PLAT: ${{ runner.os }}
       SO_ARCH: ${{ runner.arch }}
+      SO_PLAT_OVER: ${{ inputs.os }}
+      SO_ARCH_OVER: ${{ inputs.arch }}
       SO_NAME: ${{ inputs.name }}
       SO_ARCHIVE: ${{ inputs.archive }}
       SO_PATH: ${{ inputs.path }}
@@ -55,6 +63,12 @@ runs:
       SO_BRANCHES: ${{ inputs.branches }}
     shell: bash
     run: |
+      if [[ "$SO_PLAT_OVER" != "" ]]; then
+        SO_PLAT=$SO_PLAT_OVER
+      fi
+      if [[ "$SO_ARCH_OVER" != "" ]]; then
+        SO_ARCH=$SO_ARCH_OVER
+      fi
       SO_PLAT=$(echo "$SO_PLAT" | tr '[:upper:]' '[:lower:]')
       SO_ARCH=$(echo "$SO_ARCH" | tr '[:upper:]' '[:lower:]')
       if [[ "$SO_ARCHIVE" == "" ]]; then
