@@ -78,6 +78,12 @@ Default: (read from `v.mod`)
 
 The path to the binary file to package, on Windows including the `.exe` extension. The project name from `v.mod` will be used by default, with the file extension according to the platform (`.exe` will be appended on Windows).
 
+### extra
+
+Type: `String`<br>
+
+Paths to additional directories and files to include in the archive together with the binary executable. (No Windows support yet.)
+
 ### branches
 
 Type: `String`<br>

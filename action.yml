@@ -22,6 +22,9 @@ inputs:
   path:
     description: >-
       The path to the binary file to package. The project name from `v.mod` will be used by default, with the file extenson according to the platform. (`.exe` will be appended on Windows by default.)
+  extra:
+    description: >-
+      Paths to additional directories and files to include in the archive together with the binary executable. (No Windows support yet.)
   branches:
     description: >-
       Branches which this action should run for, which are used to publishing releases. Use spaces for separating the branch names. If you want to use multiple lines in YAML, introduce them with ">-". If you want to allow all branches, set the value to "*".
@@ -104,7 +107,13 @@ runs:
   - name: Pack on Linux and macOS
     if: ${{ steps.setup.outputs.enable == 'true' && (runner.os == 'Linux' || runner.os == 'macOS') }}
     shell: bash
-    run: zip -9j ${{ steps.setup.outputs.archive }} ${{ steps.setup.outputs.path }}
+    run: |
+      zip -9j ${{ steps.setup.outputs.archive }} ${{ steps.setup.outputs.path }}
+      if [[ "$SO_EXTRA" != "" ]]; then
+        zip -9r ${{ steps.setup.outputs.archive }} $SO_EXTRA
+      fi
+    env:
+      SO_EXTRA: ${{ inputs.extra }}
   - name: Pack on Windows
     if: ${{ steps.setup.outputs.enable == 'true' && runner.os == 'Windows' }}
     shell: powershell
