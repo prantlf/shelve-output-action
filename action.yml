@@ -96,7 +96,7 @@ runs:
         echo "enable=true" >> $GITHUB_OUTPUT
       fi
   - name: Check platform and architecture
-    if: ${{ steps.setup.outputs.enable == 'true' && (runner.os != 'Linux' && runner.os != 'macOS' && runner.os != 'Windows' || runner.arch != 'X64') }}
+    if: ${{ steps.setup.outputs.enable == 'true' && (runner.os != 'Linux' && runner.os != 'macOS' && runner.os != 'Windows' || runner.os == 'Windows' && runner.arch != 'X64') }}
     env:
       SO_PLAT: ${{ runner.os }}
       SO_ARCH: ${{ runner.arch }}
