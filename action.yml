@@ -120,7 +120,7 @@ runs:
     run: Compress-Archive -Path "${{ steps.setup.outputs.path }}" -DestinationPath "${{ steps.setup.outputs.archive }}"
   - name: Put archive to cache
     if: ${{ steps.setup.outputs.enable == 'true' }}
-    uses: actions/cache/save@v3
+    uses: actions/cache/save@v4
     with:
       path: ${{ steps.setup.outputs.archive }}
       key: ${{ steps.setup.outputs.cache-key }}

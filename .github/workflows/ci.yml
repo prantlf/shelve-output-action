@@ -16,53 +16,43 @@ jobs:
   linux:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout sources
-      uses: actions/checkout@v4
-    - name: Test defaults
+    - uses: actions/checkout@v4
+    - uses: ./
       id: test-linux
-      uses: ./
-    - name: Check archive
-      shell: bash
-      run: |
+    - run: |
         if [ ! -f "${{ steps.test-linux.outputs.archive }}" ]; then
           echo "${{ steps.test-linux.outputs.archive }} does not exist"
           exit 1
         fi
+      shell: bash
 
   macos:
     runs-on: macos-13
     steps:
-    - name: Checkout sources
-      uses: actions/checkout@v4
-    - name: Test defaults
+    - uses: actions/checkout@v4
+    - uses: ./
       id: test-macos
-      uses: ./
-    - name: Check archive
-      shell: bash
-      run: |
+    - run: |
         if [ ! -f "${{ steps.test-macos.outputs.archive }}" ]; then
           echo "${{ steps.test-macos.outputs.archive }} does not exist"
           exit 1
         fi
+      shell: bash
 
   windows:
     runs-on: windows-latest
     steps:
-    - name: Checkout sources
-      uses: actions/checkout@v4
-    - name: Simulate executable
+    - uses: actions/checkout@v4
+    - run: Copy-Item "LICENSE" -Destination "LICENSE.exe"
       shell: powershell
-      run: Copy-Item "LICENSE" -Destination "LICENSE.exe"
-    - name: Test defaults
+    - uses: ./
       id: test-windows
-      uses: ./
-    - name: Check archive
-      shell: powershell
-      run: |
+    - run: |
         if (!(Test-Path "${{ steps.test-windows.outputs.archive }}")) {
           Write-Warning ""${{ steps.test-windows.outputs.archive }}" does not exist"
           exit 1
         }
+      shell: powershell
 
   test-and-release:
     needs:
@@ -71,30 +61,25 @@ jobs:
       - windows
     runs-on: macos-13
     steps:
-    - name: Restore Linux archive
-      uses: actions/cache/restore@v3
+    - uses: actions/cache/restore@v4
       with:
         path: LICENSE-linux-x64.zip
         key: LICENSE-linux-x64.zip-${{ github.sha }}
         fail-on-cache-miss: true
         enableCrossOsArchive: true
-    - name: Restore macOS archive
-      uses: actions/cache/restore@v3
+    - uses: actions/cache/restore@v4
       with:
         path: LICENSE-macos-x64.zip
         key: LICENSE-macos-x64.zip-${{ github.sha }}
         fail-on-cache-miss: true
         enableCrossOsArchive: true
-    - name: Restore Windows archive
-      uses: actions/cache/restore@v3
+    - uses: actions/cache/restore@v4
       with:
         path: LICENSE-windows-x64.zip
         key: LICENSE-windows-x64.zip-${{ github.sha }}
         fail-on-cache-miss: true
         enableCrossOsArchive: true
-    - name: Check archives
-      shell: bash
-      run: |
+    - run: |
         if [ ! -f "LICENSE-linux-x64.zip" ]; then
           echo "LICENSE-linux-x64.zip does not exist"
           exit 1
@@ -107,23 +92,19 @@ jobs:
           echo "LICENSE-windows-x64.zip does not exist"
           exit 1
         fi
-    - name: Clear Linux cache
-      uses: prantlf/delete-cache-action@v1
+      shell: bash
+    - uses: prantlf/delete-cache-action@v3
       with:
         key: LICENSE-linux-x64.zip-${{ github.sha }}
-    - name: Clear macOS cache
-      uses: prantlf/delete-cache-action@v1
+    - uses: prantlf/delete-cache-action@v3
       with:
         key: LICENSE-macos-x64.zip-${{ github.sha }}
-    - name: Clear Windows cache
-      uses: prantlf/delete-cache-action@v1
+    - uses: prantlf/delete-cache-action@v3
       with:
         key: LICENSE-windows-x64.zip-${{ github.sha }}
-    - name: Checkout sources
-      uses: actions/checkout@v4
-    - name: Publish release
+    - uses: actions/checkout@v4
+    - uses: prantlf/publish-release-action@v1
       if: ${{ github.ref_name == 'master' }}
-      uses: prantlf/publish-release-action@v1
       with:
         no-bump: true
         no-archives: true
