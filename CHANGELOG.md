@@ -1,5 +1,17 @@
 # Changes
 
+# [3.0.0](https://github.com/prantlf/shelve-output-action/compare/v2.2.1...v3.0.0) (2024-05-07)
+
+## Bug Fixes
+
+* Upgrade dependencies ([ac77af6](https://github.com/prantlf/shelve-output-action/commit/ac77af6988ce67b9ba8885a72b5a0f1a35607a69))
+
+# [2.2.1](https://github.com/prantlf/shelve-output-action/compare/v2.2.0...v2.2.1) (2024-04-26)
+
+## Bug Fixes
+
+* Enable ARM on Linux and macOS ([16c9b0e](https://github.com/prantlf/shelve-output-action/commit/16c9b0e90b693b6784f9c5608d55aa4499488eb6))
+
 # [2.2.0](https://github.com/prantlf/shelve-output-action/compare/v2.1.0...v2.2.0) (2023-12-15)
 
 ## Features
