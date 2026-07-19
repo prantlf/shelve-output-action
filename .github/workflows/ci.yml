@@ -71,8 +71,8 @@ jobs:
         enableCrossOsArchive: true
     - uses: actions/cache/restore@v6
       with:
-        path: LICENSE-macos-x64.zip
-        key: LICENSE-macos-x64.zip-${{ github.sha }}
+        path: LICENSE-macos-arm64.zip
+        key: LICENSE-macos-arm64.zip-${{ github.sha }}
         fail-on-cache-miss: true
         enableCrossOsArchive: true
     - uses: actions/cache/restore@v6
@@ -86,8 +86,8 @@ jobs:
           echo "LICENSE-linux-x64.zip does not exist"
           exit 1
         fi
-        if [ ! -f "LICENSE-macos-x64.zip" ]; then
-          echo "LICENSE-macos-x64.zip does not exist"
+        if [ ! -f "LICENSE-macos-arm64.zip" ]; then
+          echo "LICENSE-macos-arm64.zip does not exist"
           exit 1
         fi
         if [ ! -f "LICENSE-windows-x64.zip" ]; then
@@ -100,7 +100,7 @@ jobs:
         key: LICENSE-linux-x64.zip-${{ github.sha }}
     - uses: prantlf/delete-cache-action@v4
       with:
-        key: LICENSE-macos-x64.zip-${{ github.sha }}
+        key: LICENSE-macos-arm64.zip-${{ github.sha }}
     - uses: prantlf/delete-cache-action@v4
       with:
         key: LICENSE-windows-x64.zip-${{ github.sha }}
