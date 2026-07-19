@@ -16,7 +16,7 @@ jobs:
   linux:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
     - uses: ./
       id: test-linux
     - run: |
@@ -27,9 +27,9 @@ jobs:
       shell: bash
 
   macos:
-    runs-on: macos-13
+    runs-on: macos-latest
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
     - uses: ./
       id: test-macos
     - run: |
@@ -42,7 +42,7 @@ jobs:
   windows:
     runs-on: windows-latest
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
     - run: Copy-Item "LICENSE" -Destination "LICENSE.exe"
       shell: powershell
     - uses: ./
@@ -59,21 +59,21 @@ jobs:
       - linux
       - macos
       - windows
-    runs-on: macos-13
+    runs-on: macos-latest
     steps:
-    - uses: actions/cache/restore@v4
+    - uses: actions/cache/restore@v6
       with:
         path: LICENSE-linux-x64.zip
         key: LICENSE-linux-x64.zip-${{ github.sha }}
         fail-on-cache-miss: true
         enableCrossOsArchive: true
-    - uses: actions/cache/restore@v4
+    - uses: actions/cache/restore@v6
       with:
         path: LICENSE-macos-x64.zip
         key: LICENSE-macos-x64.zip-${{ github.sha }}
         fail-on-cache-miss: true
         enableCrossOsArchive: true
-    - uses: actions/cache/restore@v4
+    - uses: actions/cache/restore@v6
       with:
         path: LICENSE-windows-x64.zip
         key: LICENSE-windows-x64.zip-${{ github.sha }}
@@ -93,16 +93,16 @@ jobs:
           exit 1
         fi
       shell: bash
-    - uses: prantlf/delete-cache-action@v3
+    - uses: prantlf/delete-cache-action@v4
       with:
         key: LICENSE-linux-x64.zip-${{ github.sha }}
-    - uses: prantlf/delete-cache-action@v3
+    - uses: prantlf/delete-cache-action@v4
       with:
         key: LICENSE-macos-x64.zip-${{ github.sha }}
-    - uses: prantlf/delete-cache-action@v3
+    - uses: prantlf/delete-cache-action@v4
       with:
         key: LICENSE-windows-x64.zip-${{ github.sha }}
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
     - uses: prantlf/publish-release-action@v1
       if: ${{ github.ref_name == 'master' }}
       with:
