@@ -9,7 +9,7 @@ Only platforms Linux, macOS, Windows on the architecture X64 are supported.
 Pack the binary executable produced with the project name to the project root:
 
 ```yml
-- uses: prantlf/shelve-output-action@v2
+- uses: prantlf/shelve-output-action@v4
 ```
 
 Depending on the platform, where the action is running, and the `name` of the executable, it will create one of the following archives and upload it to the cache. For example, for the name `newchanges`:
@@ -31,10 +31,10 @@ Use a different name, platform and architecture in the package archive name than
 jobs:
   build:
     steps:
-    - uses: actions/checkout@v4
-    - uses: prantlf/setup-v-action@v2
+    - uses: actions/checkout@v7
+    - uses: prantlf/setup-v-action@v4
     - run: ...
-    - uses prantlf/shelve-output-action@v2
+    - uses prantlf/shelve-output-action@v4
       with:
         archive: vpm-ubuntu-amd64.zip
         path: bin/vpm
