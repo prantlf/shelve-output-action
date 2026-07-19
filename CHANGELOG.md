@@ -1,5 +1,15 @@
 # Changes
 
+# [4.0.0](https://github.com/prantlf/shelve-output-action/compare/v3.0.0...v4.0.0) (2026-07-19)
+
+## Features
+
+* Upgrade dependencies ([c155b56](https://github.com/prantlf/shelve-output-action/commit/c155b56311c60ef86f70e5d35d9d633d28ac76ff))
+
+## BREAKING CHANGES
+
+GitHub actions which this action depends on were upgraded to their latest versions, which require Node.js 24 for running.
+
 # [3.0.0](https://github.com/prantlf/shelve-output-action/compare/v2.2.1...v3.0.0) (2024-05-07)
 
 ## Bug Fixes
