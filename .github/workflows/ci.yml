@@ -57,6 +57,7 @@ jobs:
   test-and-release:
     permissions:
       actions: write
+      contents: write
     needs:
       - linux
       - macos
