@@ -124,7 +124,7 @@ The key, which was used to store the created archive to cache.
 
 ## License
 
-Copyright (C) 2023-2024 Ferdinand Prantl
+Copyright (C) 2023-2026 Ferdinand Prantl
 
 Licensed under the [MIT License].
 
