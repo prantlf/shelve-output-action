@@ -55,6 +55,8 @@ jobs:
       shell: powershell
 
   test-and-release:
+    permissions:
+      actions: write
     needs:
       - linux
       - macos
